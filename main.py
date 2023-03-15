@@ -5,6 +5,7 @@ import pygame as pg
 import random
 import os
 # import settings 
+# test comment for git 
 from settings import *
 from sprites import *
 # from pg.sprite import Sprite
