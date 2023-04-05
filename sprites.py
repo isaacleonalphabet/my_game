@@ -11,7 +11,7 @@ vec = pg.math.Vector2
 class Player(Sprite):
     def __init__(self, game):
         Sprite.__init__(self)
-        # these are the properties
+        # these are the properties of the my_player descriptions
         self.game = game
         self.image = pg.Surface((50,50))
         self.image.fill(BLACK)
@@ -44,32 +44,35 @@ class Player(Sprite):
         self.rect.x += 1
         hits = pg.sprite.spritecollide(self, self.game.platforms, False)
         self.rect.x -= 1
-        if hits:
-            self.vel.y = -PLAYER_JUMP
-    # This tells me where I am going as I am contorlling the player 
+        # if hits:
+        self.vel.y = -PLAYER_JUMP
+    
     def inbounds(self):
-        if self.rect.x > WIDTH - 50:
-            self.pos.x = WIDTH - 25
-            self.vel.x = 0
+        # Thsi restricts the player on where it can go. 
+        # I want to know how to make barriers for player but I semi dont know how 
+        if self.rect.x > WIDTH:
+            self.pos.x = -1
+            self.vel.x = -1
             print("i am off the right side of the screen...")
         if self.rect.x < 0:
-            self.pos.x = 25
-            self.vel.x = 0
+            self.pos.x = -1
+            self.vel.x = -1
             print("i am off the left side of the screen...")
         if self.rect.y > HEIGHT:
+            self.pos.y = -1
+            self.vel.y = -1
             print("i am off the bottom of the screen")
         if self.rect.y < 0:
+            self.pos.y = -1
+            self.vel.y = -1
+
             print("i am off the top of the screen...")
-            # This promotes the location of the enemy 
-            # If I touch the enemy, it will say I collided with it 
     def mob_collide(self):
             hits = pg.sprite.spritecollide(self, self.game.enemies, True)
             if hits:
                 print("you collided with an enemy...")
                 self.game.score += 1
                 print(SCORE)
-                # This says  how fast the player is going and how it will not slide as much 
-                # The position of the player is going to be steady 
     def update(self):
         self.acc = vec(0, PLAYER_GRAV)
         self.acc.x = self.vel.x * PLAYER_FRICTION
@@ -77,8 +80,9 @@ class Player(Sprite):
         self.vel += self.acc
         self.pos += self.vel + 0.5 * self.acc
         self.rect.midbottom = self.pos
-# This descirbes the enemy and shows the height, width, color, and speed. 
+
 class Mob(Sprite):
+    # This fully descirbes the speed, shae, and form of how the mob "enemies" will be automated 
     def __init__(self,width,height, color):
         Sprite.__init__(self)
         self.width = width
@@ -116,6 +120,7 @@ class Mob(Sprite):
 # create a new platform class...
 
 class Platform(Sprite):
+    # Thsi specifaclly tells me how to make a platform in the game 
     def __init__(self, x, y, width, height, color, variant):
         Sprite.__init__(self)
         self.width = width
