@@ -1,4 +1,4 @@
-# Agenda:
+#File Created by Isaac Leon 
 # gIT GITHUB    
 # Build file and folder structures
 # Create libraries
@@ -40,8 +40,7 @@ class Game:
         self.platforms = pg.sprite.Group()
         self.enemies = pg.sprite.Group()
         self.player = Player(self)
-        # The size of player 
-        self.plat1 = Platform(WIDTH, 50, 0, HEIGHT-100, (150,150,150), "normal")
+        self.plat1 = Platform(WIDTH, 50, 0, HEIGHT-50, (150,150,150), "normal")
         # self.plat1 = Platform(WIDTH, 50, 0, HEIGHT-50, (150,150,150), "normal")
         self.all_sprites.add(self.plat1)
 
@@ -53,7 +52,6 @@ class Game:
             self.all_sprites.add(p)
             self.platforms.add(p)
         for i in range(0,10):
-            # The size of the mobs 
             m = Mob(20,20,(0,255,0))
             self.all_sprites.add(m)
             self.enemies.add(m)
@@ -78,24 +76,31 @@ class Game:
     def update(self):
         self.all_sprites.update()
         if self.player.vel.y > 0:
-            # Platforms are locatred in settings 
-            # PLatforms are the grey blocks that iterate of what the player can do when on top of it 
             hits = pg.sprite.spritecollide(self.player, self.platforms, False)
             if hits:
-                # The vairbales cna be contorlled in settings under platforms 
                 if hits[0].variant == "normal":
                     hits[0].kill()
-                elif hits[0].variant == "bouncey":
+                elif hits[0].variant == "normal":
                     self.player.pos.y = hits[0].rect.top
                     self.player.vel.y = -PLAYER_JUMP
                 else:
                     self.player.pos.y = hits[0].rect.top
-                    self.player.vel.y = 1
-# I can wrtie down on what is shwon on the screen with size and location
+                    self.player.vel.y = 0
+
     def draw(self):
+        
         self.screen.fill(BLUE)
-        self.draw_text("GAME ON", 24, WHITE, WIDTH/2, HEIGHT/2)
+        self.draw_text("GAME ON", 100, BLACK, WIDTH/2, HEIGHT/2)
         self.all_sprites.draw(self.screen)
+        self.win = (pg.sprite.spritecollide(self.player, self.platforms, False))
+        if not self.win:
+            # self.draw_text(str(self.player.rot), 24, WHITE, WIDTH/2, HEIGHT/2)
+            self.draw_text(str("You LOSE"), 50, RED, WIDTH/2, HEIGHT/2)
+        if self.win == pg.sprite.spritecollide(self.player, self.platforms, False):
+            self.draw_text("You win the lottery!", 24, WHITE, WIDTH/2, HEIGHT/2)
+
+       
+
 
         # is this a method or a function?
         pg.display.flip()
