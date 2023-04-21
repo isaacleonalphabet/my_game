@@ -14,9 +14,10 @@ class Player(Sprite):
         Sprite.__init__(self)
         # these are the properties
         self.game = game
-        self.image = pg.Surface((50,50))
-        self.image.fill(WHITE)
-        self.rect = self.image.get_rect()
+        Doodle_jump_image = pg.image.load  ("Doodle jump.jpg").convert()
+        Doodle_jump_image_rect = Doodle_jump_image.get_rect()
+        self.rect = self.image.self_rect()
+
         self.rect.center = (WIDTH/2, HEIGHT/2)
         self.pos = vec(WIDTH/2, HEIGHT/2)
         self.vel = vec(0,0)
@@ -49,6 +50,9 @@ class Player(Sprite):
         self.vel.y = -PLAYER_JUMP
     
     def inbounds(self):
+
+    # I tried to make an inbounds play so I want just fall out but failed ): 
+    # I basically tried to say that there is a restriciton point in the picture that is filled out blue
         if self.rect.x > WIDTH:
             self.pos.x = WIDTH - 25
             self.vel.x = 0

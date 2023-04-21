@@ -1,9 +1,5 @@
 #File Created by Isaac Leon 
-# gIT GITHUB    
-# Build file and folder structures
-# Create libraries
-# testing github changes
-# I changed something - I changed something else tooooo!
+
 
 # This file was created by: Chris Cozort
 # Sources: http://kidscancode.org/blog/2016/08/pygame_1-1_getting-started/
@@ -19,7 +15,11 @@ from sprites import *
 
 # set up assets folders
 game_folder = os.path.dirname(__file__)
-img_folder = os.path.join(game_folder, "img")
+img_folder = os.path.join(game_folder, "Doodle jump")
+
+'''
+goal: Fall down the screen and say "you loose" and try to make a new platorm that disappears. 
+'''
 
 # create game class in order to pass properties to the sprites file
 
@@ -78,8 +78,10 @@ class Game:
         if self.player.vel.y > 0:
             hits = pg.sprite.spritecollide(self.player, self.platforms, False)
             if hits:
+                # These two platforms will not disappear, they are my safe zones. 
                 if hits[0].variant == "normal":
                     hits[0].kill()
+                    # No matter how may times I hit them, they will not kill me (lose)
                 elif hits[0].variant == "normal":
                     self.player.pos.y = hits[0].rect.top
                     self.player.vel.y = -PLAYER_JUMP
@@ -92,12 +94,15 @@ class Game:
         self.screen.fill(BLUE)
         self.draw_text("GAME ON", 100, BLACK, WIDTH/2, HEIGHT/2)
         self.all_sprites.draw(self.screen)
+        # Winning = I am on a platform 
         self.win = (pg.sprite.spritecollide(self.player, self.platforms, False))
+        # This says as long as I am not on a platform, I am loosing or I just lost ebcuase the platforms on the bottom will dissappear
         if not self.win:
             # self.draw_text(str(self.player.rot), 24, WHITE, WIDTH/2, HEIGHT/2)
-            self.draw_text(str("You LOSE"), 50, RED, WIDTH/2, HEIGHT/2)
+            self.draw_text(str("YOU LOSE"), 50, RED, WIDTH/2, HEIGHT/2)
+            #This says that as long as I am on a platform I am winning 
         if self.win == pg.sprite.spritecollide(self.player, self.platforms, False):
-            self.draw_text("You win the lottery!", 24, WHITE, WIDTH/2, HEIGHT/2)
+            self.draw_text("YOU WIN THE LOTTERY!", 24, WHITE, WIDTH/2, HEIGHT/2)
 
        
 
