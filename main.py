@@ -1,9 +1,5 @@
 #File Created by Isaac Leon 
-# gIT GITHUB    
-# Build file and folder structures
-# Create libraries
-# testing github changes
-# I changed something - I changed something else tooooo!
+
 
 # This file was created by: Chris Cozort
 # Sources: http://kidscancode.org/blog/2016/08/pygame_1-1_getting-started/
@@ -15,11 +11,14 @@ import os
 # import settings 
 from settings import *
 from sprites import *
+from os import path
 # from pg.sprite import Sprite
 
 # set up assets folders
-game_folder = os.path.dirname(__file__)
-img_folder = os.path.join(game_folder, "img")
+
+'''
+goal: Fall down the screen and say "you loose" and try to make a new platorm that disappears. 
+'''
 
 # create game class in order to pass properties to the sprites file
 
@@ -33,6 +32,10 @@ class Game:
         self.clock = pg.time.Clock()
         self.running = True
         print(self.screen)
+
+    def load_data(self):
+        self.player_img = pg.image.load(path.join(img_folder, "Doodle jump")).convert()
+
     def new(self):
         # starting a new game
         self.score = 0
@@ -43,7 +46,6 @@ class Game:
         self.plat1 = Platform(WIDTH, 50, 0, HEIGHT-50, (150,150,150), "normal")
         # self.plat1 = Platform(WIDTH, 50, 0, HEIGHT-50, (150,150,150), "normal")
         self.all_sprites.add(self.plat1)
-
         self.platforms.add(self.plat1)
         
         self.all_sprites.add(self.player)
@@ -56,6 +58,10 @@ class Game:
             self.all_sprites.add(m)
             self.enemies.add(m)
         self.run()
+
+    def load_data(self):
+        self.player_img = pg.image.load(path.join(img_folder, "Doodle Jump.jpg")).convert()
+
     def run(self):
         self.playing = True
         while self.playing:
@@ -78,30 +84,32 @@ class Game:
         if self.player.vel.y > 0:
             hits = pg.sprite.spritecollide(self.player, self.platforms, False)
             if hits:
+                # These two platforms will not disappear, they are my safe zones. 
                 if hits[0].variant == "normal":
                     hits[0].kill()
+                    # No matter how may times I hit them, they will not kill me (lose)
                 elif hits[0].variant == "normal":
                     self.player.pos.y = hits[0].rect.top
                     self.player.vel.y = -PLAYER_JUMP
                 else:
                     self.player.pos.y = hits[0].rect.top
                     self.player.vel.y = 0
+                if not self.win:
+            # self.draw_text(str(self.player.rot), 24, WHITE, WIDTH/2, HEIGHT/2)
+                    self.update(str("YOU LOSE"), 50, RED, WIDTH/2, HEIGHT/2)
+            #This says that as long as I am on a platform I am winning 
+                if self.win == pg.sprite.spritecollide(self.player, self.platforms, False):
+                    self.update("YOU WIN THE LOTTERY!", 24, WHITE, WIDTH/2, HEIGHT/2)
 
     def draw(self):
         
         self.screen.fill(BLUE)
         self.draw_text("GAME ON", 100, BLACK, WIDTH/2, HEIGHT/2)
         self.all_sprites.draw(self.screen)
+        # Winning = I am on a platform 
         self.win = (pg.sprite.spritecollide(self.player, self.platforms, False))
-        if not self.win:
-            # self.draw_text(str(self.player.rot), 24, WHITE, WIDTH/2, HEIGHT/2)
-            self.draw_text(str("You LOSE"), 50, RED, WIDTH/2, HEIGHT/2)
-        if self.win == pg.sprite.spritecollide(self.player, self.platforms, False):
-            self.draw_text("You win the lottery!", 24, WHITE, WIDTH/2, HEIGHT/2)
-
-       
-
-
+        # This says as long as I am not on a platform, I am loosing or I just lost ebcuase the platforms on the bottom will dissappear
+    
         # is this a method or a function?
         pg.display.flip()
     def draw_text(self, text, size, color, x, y):

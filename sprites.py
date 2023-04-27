@@ -9,13 +9,17 @@ vec = pg.math.Vector2
 
 # player class
 
+game_folder = (__file__)
+img_folder = (game_folder, "Doodle jump.jpg")
+
 class Player(Sprite):
     def __init__(self, game):
         Sprite.__init__(self)
         # these are the properties
         self.game = game
-        self.image = pg.Surface((50,50))
-        self.image.fill(WHITE)
+        self.player = img_folder
+        player_img = "Doodle jump.jpg"
+        self.image = pg.Surface(player_img,(64, 64))
         self.rect = self.image.get_rect()
         self.rect.center = (WIDTH/2, HEIGHT/2)
         self.pos = vec(WIDTH/2, HEIGHT/2)
@@ -49,6 +53,9 @@ class Player(Sprite):
         self.vel.y = -PLAYER_JUMP
     
     def inbounds(self):
+
+    # I tried to make an inbounds play so I want just fall out but failed ): 
+    # I basically tried to say that there is a restriciton point in the picture that is filled out blue
         if self.rect.x > WIDTH:
             self.pos.x = WIDTH - 25
             self.vel.x = 0
